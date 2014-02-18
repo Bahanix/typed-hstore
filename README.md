@@ -8,8 +8,15 @@ bundle install
 rake db:create
 rake db:migrate
 rails c
-Dog.create properties: { is_fat: true }
- =>  INSERT INTO "dogs" ("created_at", "properties", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", Mon, 17 Feb 2014 09:20:47 UTC +00:00], ["properties", "--- !ruby/hash:Dog::PropertiesHash\nis_fat: true\n"], ["updated_at", Mon, 17 Feb 2014 09:20:47 UTC +00:00]]
+
+Dog.create toys: ['bone']
+ => INSERT INTO "dogs" ("created_at", "properties", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", Tue, 18 Feb 2014 11:21:32 UTC +00:00], ["properties", {"toys"=>["bone"]}], ["updated_at", Tue, 18 Feb 2014 11:21:32 UTC +00:00]]
+ => (0.5ms)  COMMIT
+ => #<Dog id: 2, name: nil, properties: {"toys"=>["bone"]}, created_at: "2014-02-18 11:21:32", updated_at: "2014-02-18 11:21:32">
+
+Dog.last
+ => Dog Load (0.9ms)  SELECT "dogs".* FROM "dogs" ORDER BY "dogs"."id" DESC LIMIT 1
+ => #<Dog id: 2, name: nil, properties: {"toys"=>[]}, created_at: "2014-02-18 11:21:32", updated_at: "2014-02-18 11:21:32">
 ```
 
 https://github.com/byroot/activerecord-typedstore/issues/11
